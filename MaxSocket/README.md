@@ -3,8 +3,8 @@
 #### Зовнішній вигляд
 ![Image description](https://github.com/MaksKliuba/ArduinoProjects/blob/master/MaxSocket/images/photo_1.jpg)
 
-#### Демонстрація роботи
+#### Інтерфейс керування
 ![Image description](https://github.com/MaksKliuba/ArduinoProjects/blob/master/MaxSocket/images/photo_2.jpg)
 
-#### Підзарядка акумулятора
+#### Сторінка помилки 404
 ![Image description](https://github.com/MaksKliuba/ArduinoProjects/blob/master/MaxSocket/images/photo_3.jpg)
