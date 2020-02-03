@@ -28,7 +28,7 @@
 #### Галерея із малюнками, які намальовані у MiniPaint
 ![Image description](https://github.com/MaksKliuba/ArduinoProjects/blob/master/Ruby/images/photo_10.jpg)
 
-#### Конвертований малюнок із допомогою програми ConvertFromTXT (https://github.com/MaksKliuba/WindowsFormApps/tree/master/ConvertFromTXT)
+#### Конвертований малюнок із допомогою програми [ConvertFromTXT](https://github.com/MaksKliuba/WindowsFormApps/tree/master/ConvertFromTXT)
 ![Image description](https://github.com/MaksKliuba/ArduinoProjects/blob/master/Ruby/images/photo_11.jpg)
 
 #### Вкладка музики із аналізатором аудіо спектру
