@@ -1,0 +1,63 @@
+﻿body {
+	background-color: #202124;
+	color: white;
+	display: block;
+	text-align: center;
+}
+
+#box{
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	margin-right: -50%;
+	transform: translate(-50%, -50%);
+	text-align: center;
+	height: 100%;
+}
+
+#pin1_text, #pin2_text, #pin3_text{
+	font-family: Arial;
+	font-size: 25px;
+	color: #FFFFFF;
+	margin-top: 35px;
+	display: block;
+}
+	
+#pin1_button, #pin2_button, #pin3_button{
+	border: none;
+	background-color: transparent;
+	outline:none;
+	display: inline-block;
+	width: 300px;
+	height: 130px;
+	margin-top: 10px;
+	margin-bottom: 30px;
+	cursor: pointer;
+	
+	transform: scale(0.9);
+}
+
+.pin_on {
+
+	background-image: url('sprite.png');
+	background-position: 0px 0px;
+}
+			
+.pin_off {
+	background-image: url('sprite.png');
+	background-position: -300px 0px;
+}
+
+@media screen and (max-width: 1100px) and (min-height: 720px){
+	#pin1_button, #pin2_button, #pin3_button{
+		margin-top: 100px;
+		margin-bottom: 160px;
+		cursor: auto;
+		transform: scale(1.6);
+	}
+	
+	#pin1_text, #pin2_text, #pin3_text{
+		font-size: 60px;
+		margin-top: 70px;
+	}
+ }
