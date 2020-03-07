@@ -4,6 +4,9 @@
 ![Image description](https://github.com/MaksKliuba/ArduinoProjects/blob/master/Ruby/images/photo_1.jpg)
 ![Image description](https://github.com/MaksKliuba/ArduinoProjects/blob/master/Ruby/images/photo_2.jpg)
 
+#### Робот керується із допомогою додатку [Robot Controller](https://github.com/MaksKliuba/AndroidApps/tree/master/RobotController)
+![Image description](https://github.com/MaksKliuba/AndroidApps/blob/master/RobotController/images/photo_1.jpg)
+
 #### Робот реагує на дотик і положення у просторі
 ![Image description](https://github.com/MaksKliuba/ArduinoProjects/blob/master/Ruby/images/photo_3.jpg)
 
