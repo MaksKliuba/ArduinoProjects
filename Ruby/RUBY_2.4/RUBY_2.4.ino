@@ -150,7 +150,7 @@ bool checkGallery = false;
 #define cellH 8
 int column[16], columnLast[16], maxPoint[16];
 bool musicPlay = false, checkMusic = false, rndM = false, loopM = false;
-int value = 22, colorCell, track = minTrack;
+int colorCell, track = minTrack;
 float GAIN_K;
 #define colorMaxPoint VGA_WHITE
 #define LOW_PASS 30
@@ -358,51 +358,17 @@ void loop()
       Move("TURN_RIGHT");          
       empty = false;
     }
-/*    else if(voice == "S")
-    {
-      if(loudness <= 27)
-        loudness += 3;
-      else
-        loudness = 30;
-
-      mp3_set_volume(loudness);
-      empty = false;
-    }
-    else if(voice == "s")
-    {
-      if(loudness >= 3)
-        loudness -= 3;
-      else
-        loudness = 0;
-       
-      mp3_set_volume(loudness);
-      empty = false;
-    }
-    
-    if(voice == "A")
-    {
-      if(speed <= 245)
-        speed += 10;
-      else
-        speed = 255;
-        
-      empty = false;
-    }
-    else if(voice == "a")
-    {
-      if(speed > 50)
-        speed -= 10;
-      else
-        speed = 50;
-
-      empty = false;
-    } */
 
     else if (voice.startsWith("0:")) // SOUND
     {
       voice.remove(0, 2);
       loudness = voice.toInt();
-      mp3_set_volume (loudness);
+      
+      if(menuLevel == 6)
+        printValue(loudness);
+      else
+        mp3_set_volume (loudness);
+        
       loudnessCheck = false;
       empty = false;
     }

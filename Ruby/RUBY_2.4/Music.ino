@@ -10,7 +10,7 @@ void Music()
     tft.fillRect(10, 40, 460, 221, VGA_WHITE);
     tft.fillRect(96, 40, 291, 221, colorScreen);
 
-    printValue(value);
+    printValue(loudness);
 
     if(musicPlay)
     {
@@ -76,8 +76,7 @@ void Music()
 
       if(p.x >= 85 && p.x <= 385 && p.y >= 5 && p.y <= 35)
       {
-        value = (p.x - 76)/10;
-        printValue(value);
+        printValue((p.x - 76)/10);
       }
 
       if(p.x >= 10 && p.x <= 50 && p.y >= 270 && p.y <= 310)
@@ -229,6 +228,7 @@ void startPlayMusic()
 
 void printValue(int value)
 {
+    loudness = value;
     tft.fillRect(85, 15, 310, 10, VGA_WHITE);
     tft.fillRect(value*10 + 85, 15, 10, 10, VGA_RED);
     tft.setTextColor(VGA_WHITE, colorScreen);
@@ -237,6 +237,7 @@ void printValue(int value)
     tft.println(" " + (String)value + " ");
     mp3_set_volume (value);
     GAIN_K = (float)map(value, 1, 31, 24, 11) / 10;
+    sendData("0:" + (String)value);
     //delay(100);
 }
 
