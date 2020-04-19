@@ -454,7 +454,6 @@ void Emotions(int n)
   }
   else if(n == 9) // Mrrr
   {
-     mp3_set_volume(25);
      tft.fillRoundRect(100, 120, 120, 60, 20, colorEyes);
      tft.fillRoundRect(260, 120, 120, 60, 20, colorEyes);
      tft.fillRect(100, 160, 120, 60, colorScreen);
@@ -476,7 +475,6 @@ void Emotions(int n)
      delay(100);
      mp3_single_loop(false);
      N = 1;
-     mp3_set_volume(loudness);
   }
   else if(n == 10)
   {
