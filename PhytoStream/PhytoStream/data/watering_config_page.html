@@ -1,0 +1,376 @@
+﻿<!DOCTYPE html>
+
+<html>
+	<head>
+		<title>PhytoStream | Watering Configuration</title>
+		<meta charset="utf-8"/>
+		<meta name="viewport" content="width=device-width">
+		<link rel="shortcut icon" href="phyto.png" type="image/png">
+		<link rel="stylesheet" href="style.css" type="text/css">
+
+		<style type="text/css">
+			#back-button{
+				left: 15px;
+			}
+
+			#back-button::before{
+				content: ''; 
+    			position: absolute;
+    			width: 28px;
+				height: 5px;
+				border-radius: 2px;
+				background-color: var(--text-color);
+				left: 20%;
+				top: 30%;
+				-webkit-transform: rotate(-45deg);
+  				transform: rotate(-45deg);
+			}
+
+			#back-button::after{
+				content: ''; 
+    			position: absolute;
+    			width: 28px;
+				height: 5px;
+				border-radius: 2px;
+				background-color: var(--text-color);
+				left: 20%;
+				top: 63%;
+				-webkit-transform: rotate(45deg);
+  				transform: rotate(45deg);
+			}
+
+			#box{
+				padding-top: 70px;
+				text-align: center;
+				text-align: -webkit-center;
+				text-align:-moz-center;
+			}
+
+			#additional-containers-box {
+				background: transparent;
+				display: none;
+			}
+
+			.additional-container {
+				height: 230px;
+				margin: 0px;
+				margin-bottom: 80px;
+				display: none;
+			}
+
+			.input-text {
+				width: 100px;
+				margin-left: 90px;
+				margin-right: 90px;
+			}
+
+			.switch {
+				position: relative;
+				display: inline-block;
+				vertical-align: top;
+				width: 100px;
+				height: 50px;
+				margin-left: 100px;
+				margin-right: 100px;
+				transition: 0.25s;
+			}
+
+			.switch input {
+				opacity: 0;
+				width: 0;
+				height: 0;
+			}
+
+			.slider {
+				position: absolute;
+				cursor: pointer;
+				top: 0;
+				left: 0;
+				right: 0;
+				bottom: 0;
+				background-color: #ccc;
+				-webkit-transition: .4s;
+				transition: .4s;
+				border-radius: 50px;
+			}
+
+			.slider:before {
+				position: absolute;
+				content: "";
+				height: 40px;
+				width: 40px;
+				left: 5px;
+				bottom: 5px;
+				background-color: white;
+				-webkit-transition: .4s;
+				transition: .4s;
+				border-radius: 50%;
+			}
+
+			input:checked+.slider {
+				background-color: var(--switch-color-on);
+			}
+
+			input:focus+.slider {
+				box-shadow: 0 0 1px var(--switch-color-on);
+			}
+
+			input:checked+.slider:before {
+				-webkit-transform: translateX(50px);
+				-ms-transform: translateX(50px);
+				transform: translateX(50px);
+			}
+			
+			.switch:hover{
+				transform: scale(1.2);
+			}
+
+			#save-button {
+				margin-top: 20px;
+			}
+
+			@media all and (orientation: portrait) {
+				.slider{
+					cursor: auto;
+				}
+			}
+		</style>
+		
+		<script type="text/javascript">
+			window.onload = function()
+			{
+				var backButton = document.getElementById("back-button");
+				var saveButton = document.getElementById("save-button");
+
+				var wateringDurationS = document.getElementById("watering-duration-s");
+				var minSoilMoistureP = document.getElementById("min-soil-moisture-p");
+				var liquidTankSwitch = document.getElementById("liquid-tank-switch");
+				var timerSwitch = document.getElementById("timer-switch");
+
+				var additionalContainersBox = document.getElementById("additional-containers-box");
+
+				var liquidTankContainer = document.getElementById("liquid-tank-container");
+				var emptyDepthMm = document.getElementById("empty-depth-mm");
+				var fullDepthMm = document.getElementById("full-depth-mm");
+
+				var timerContainer = document.getElementById("timer-container");
+				var timerPeriodH = document.getElementById("timer-period-h");
+				
+				getWateringConfigJson();
+				
+				function getWateringConfigJson(){
+					var request = new XMLHttpRequest();
+					request.open('GET','/get_watering_config',true);
+								
+					request.onload = function(){
+						if (request.readyState == 4 && request.status == 200){
+							var jsonConfig = JSON.parse(request.responseText);
+							wateringDurationS.value = jsonConfig.wataring_duration;
+							minSoilMoistureP.value = jsonConfig.min_soil_moisture_p;
+							liquidTankSwitch.checked = jsonConfig.is_tank_used;
+							liquidTankSwitchClick();
+							emptyDepthMm.value = jsonConfig.empty_depth_mm;
+							fullDepthMm.value = jsonConfig.full_depth_mm;
+							timerSwitch.checked = jsonConfig.is_timer_used;
+							timerSwitchClick();
+							timerPeriodH.value = jsonConfig.timer_period_s;
+						}
+					}
+					request.send();
+				}
+
+				function liquidTankSwitchClick(){
+					if (liquidTankSwitch.checked) {
+						liquidTankContainer.style.display = "inline-block";
+					}
+					else {
+						liquidTankContainer.style.display = "none";
+					}
+					additionalContainersBoxVisible();
+				}
+
+				function timerSwitchClick(){
+					if (timerSwitch.checked) {
+						timerContainer.style.display = "inline-block";
+					}
+					else {
+						timerContainer.style.display = "none";
+					}
+					additionalContainersBoxVisible();
+				}
+
+				function additionalContainersBoxVisible(){
+					if (liquidTankSwitch.checked || timerSwitch.checked) {
+						additionalContainersBox.style.display = "inline-block";
+					}
+					else {
+						additionalContainersBox.style.display = "none";
+					}
+				}
+				
+				var overlay = document.getElementById("overlay-id");
+				var popup = document.getElementById("popup-id");
+				var notification = document.getElementById("notification");
+				var closePopup = document.getElementById("close-popup-id");
+				
+				function setWateringConfigJson(){
+					if(checkInputNumbers()){
+						var request = new XMLHttpRequest();
+						var jsonConfig = "/set_watering_config?json=" + JSON.stringify({"wataring_duration":parseInt(wateringDurationS.value), "min_soil_moisture_p":parseInt(minSoilMoistureP.value), 
+										 "is_tank_used":liquidTankSwitch.checked, "empty_depth_mm":parseInt(emptyDepthMm.value), "full_depth_mm":parseInt(fullDepthMm.value),
+										 "is_timer_used":timerSwitch.checked, "timer_period_s":parseInt(timerPeriodH.value)});
+						
+						request.open('GET',jsonConfig,true);
+
+						request.onload = function(){			
+							if (request.readyState == 4 && request.status == 200){
+								notification.style.color = "#006000";
+							}
+							else{
+								notification.style.color = "#D40000";
+							}
+							
+							notification.value = request.responseText;					
+							overlay.style.display="block";
+						}
+						request.send();
+					}
+					else alert("Incorrect input. Please check the data and try again");
+				}
+
+				var numberStr = "0123456789";
+
+				function checkInputNumbers(){
+					var _minSoilMoistureP_Str = minSoilMoistureP.value;
+					var _wateringDurationS_Str = wateringDurationS.value;
+					var _emptyDepthMm_Str = emptyDepthMm.value;
+					var _fullDepthMm_Str = fullDepthMm.value;
+					var _timerPeriodH_Str = timerPeriodH.value;
+
+					if(_minSoilMoistureP_Str.length == 0 || _wateringDurationS_Str.length == 0 || 
+					    _emptyDepthMm_Str.length == 0 || _fullDepthMm_Str.length == 0 || _timerPeriodH_Str.length == 0) return false;
+
+					for(var i = 0; i < _minSoilMoistureP_Str.length; i++){
+						if(numberStr.indexOf(_minSoilMoistureP_Str[i]) < 0)
+							return false;
+					}
+					
+					for(var i = 0; i < _wateringDurationS_Str.length; i++){
+						if(numberStr.indexOf(_wateringDurationS_Str[i]) < 0)
+							return false;
+					}
+
+					for(var i = 0; i < _emptyDepthMm_Str.length; i++){
+						if(numberStr.indexOf(_emptyDepthMm_Str[i]) < 0)
+							return false;
+					}
+					
+					for(var i = 0; i < _fullDepthMm_Str.length; i++){
+						if(numberStr.indexOf(_fullDepthMm_Str[i]) < 0)
+							return false;
+					}
+
+					for(var i = 0; i < _timerPeriodH_Str.length; i++){
+						if(numberStr.indexOf(_timerPeriodH_Str[i]) < 0)
+							return false;
+					}
+
+					var _minSoilMoistureP = parseInt(_minSoilMoistureP_Str);
+					if(_minSoilMoistureP < 1 || _minSoilMoistureP > 100) return false;
+
+					var _wateringDurationS = parseInt(_wateringDurationS_Str);
+					if(_wateringDurationS < 1 || _wateringDurationS > 60) return false;
+
+					var _emptyDepthMm = parseInt(_emptyDepthMm_Str);
+					if(_emptyDepthMm < 1 || _emptyDepthMm > 4000) return false;
+
+					var _fullDepthMm = parseInt(_fullDepthMm_Str);
+					if(_fullDepthMm < 1 || _fullDepthMm > 4000) return false;
+
+					if(_emptyDepthMm <= _fullDepthMm) return false;
+
+					var _timerPeriodH = parseInt(_timerPeriodH_Str);
+					if(_timerPeriodH < 1 || _timerPeriodH > 744) return false;
+
+					return true;
+				}
+				
+				function closePopUp(){
+					overlay.style.display="none";
+				}
+
+				document.querySelector('body').addEventListener('click', e => {
+					if(e.target == overlay) closePopUp();
+				});
+						
+				liquidTankSwitch.addEventListener('click', liquidTankSwitchClick);
+				timerSwitch.addEventListener('click', timerSwitchClick);
+				saveButton.addEventListener('click', setWateringConfigJson);
+				closePopup.addEventListener('click', closePopUp);
+				backButton.addEventListener('click', function(){return location.href = '/index.html';});
+			}
+		</script>
+	</head>
+	
+	<body>
+		<header id="head">
+			<h1 class="page-titel"><strong>Watering Configuration</strong></h1>
+			<div class="header-button" id="back-button"></div>
+		</header>
+
+		<div id="box">
+			<div class="content-container">
+				<div class="group" style="margin-top: 50px;">
+					<label for="watering-duration-s" class="titel-label">Watering DURATION (s):</label>
+					<input type="number" step="1" min="1" max="60" id="watering-duration-s" class="input-text"/>
+				</div>
+				<div class="group">
+					<label for="min-soil-moisture-p" class="titel-label">MIN soil moistire (%):</label>
+					<input type="number" step="1" min="1" max="100" id="min-soil-moisture-p" class="input-text"/>
+				</div>
+				<div class="group">
+					<label for="liquid-tank-switch" class="titel-label">Use a DEPTH SENSOR:</label>
+					<label class="switch">
+						<input type="checkbox" id="liquid-tank-switch">
+						<span class="slider"></span>
+					</label>
+				</div>
+				<div class="group">
+					<label for="timer-switch" class="titel-label">Watering on a TIMER:</label>
+					<label class="switch">
+						<input type="checkbox" id="timer-switch">
+						<span class="slider"></span>
+					</label>
+				</div>
+				<input type="button" id="save-button" class="button" value="Save"/>
+			</div>
+
+			<div class="content-container" id="additional-containers-box">
+				<div class="content-container additional-container" id="liquid-tank-container">
+					<div class="group">
+						<label for="empty-depth-mm" class="titel-label">EMPTY (mm):</label>
+						<input type="number" step="1" min="1" max="4000" id="empty-depth-mm" class="input-text"/>
+					</div>
+					<div class="group">
+						<label for="full-depth-mm" class="titel-label">FULL (mm):</label>
+						<input type="number" step="1" min="1" max="4000" id="full-depth-mm" class="input-text"/>
+					</div>
+				</div>
+
+				<div class="content-container additional-container" id="timer-container">
+					<div class="group">
+						<label for="timer-period-h" class="titel-label">Watering PERIOD (hour):</label>
+						<input type="number" step="1" min="1" max="744" class="input-text" id="timer-period-h" />
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		<div id="overlay-id" class="overlay">
+			<div id="popup-id" class="popup">
+				<input type="text" id="notification" readonly/>
+				<div id="close-popup-id" class="close-popup">&times;</div>
+			</div>
+		</div>
+	</body>
+</html>
