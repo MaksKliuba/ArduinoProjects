@@ -1,3 +1,9 @@
+/*
+ * Created by Maxim Kliuba
+ * e-mail: klyubamaks@gmail.com
+ * (May - Juny 2021)
+ */
+
 #define DRIVER_STEP_TIME 10
 
 #include <EncButton.h>
@@ -93,6 +99,13 @@ enum ResipeState {
   STOP_LEFT,
   STOP_RIGHT,
   ROTATION,
+};
+
+const String initMessage[4] = {
+  "Oops, this device is",
+  "not activated",
+  "Please contact me:",
+  "klyubamaks@gmail.com",
 };
 
 const char *stateStr[] = {
@@ -533,6 +546,15 @@ void displayStartPage(bool forceClear = false) {
   }
 
   disableInterrupts();
+  if(EEPROM.read(INIT_KEY_EEPROM_ADDRESS) != INIT_KEY) {
+    lcd.clear();
+    lcdPrintCenter(initMessage[0], 0);
+    lcdPrintCenter(initMessage[1], 1);
+    lcdPrint(initMessage[2], 0, 2);
+    lcdPrint(initMessage[3], 0, 3);
+    while(1);
+  }
+  
   if(EEPROM.read(INIT_KEY_EEPROM_ADDRESS) != INIT_KEY || resetFlag) {
     EEPROM.update(INIT_KEY_EEPROM_ADDRESS, INIT_KEY);
     EEPROM.put(INFO_EEPROM_ADDRESS, info);
