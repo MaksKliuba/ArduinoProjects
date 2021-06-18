@@ -734,11 +734,11 @@ void displayMenuPage(bool forceClear = false) {
   }
 
   if (enc.isLeft()) {
-    mainMenu.currentItem = constrain(mainMenu.currentItem + 1, -1, mainMenu.itemsCount - 1);
+    mainMenu.currentItem = constrain(mainMenu.currentItem - 1, -1, mainMenu.itemsCount - 1);
     mainMenu.update = true;
   }
   else if (enc.isRight()) {
-    mainMenu.currentItem = constrain(mainMenu.currentItem - 1, -1, mainMenu.itemsCount - 1);
+    mainMenu.currentItem = constrain(mainMenu.currentItem + 1, -1, mainMenu.itemsCount - 1);
     mainMenu.update = true;
   }
   else if (enc.isLeftH()) {
@@ -835,11 +835,11 @@ void displayRecipeSettingsPage(bool forceClear = false) {
   }
 
   if (enc.isLeft()) {
-    subMenu.currentItem = constrain(subMenu.currentItem + 1, -1, subMenu.itemsCount - 1);
+    subMenu.currentItem = constrain(subMenu.currentItem - 1, -1, subMenu.itemsCount - 1);
     subMenu.update = true;
   }
   else if (enc.isRight()) {
-    subMenu.currentItem = constrain(subMenu.currentItem - 1, -1, subMenu.itemsCount - 1);
+    subMenu.currentItem = constrain(subMenu.currentItem + 1, -1, subMenu.itemsCount - 1);
     subMenu.update = true;
   }
   else if (enc.isLeftH()) {
@@ -951,7 +951,7 @@ void displaySettingsPage(bool forceClear = false) {
   }
 
   if (enc.isLeft()) {
-    settingsMenu.currentItem = constrain(settingsMenu.currentItem + 1, -1, settingsMenu.itemsCount - 1);
+    settingsMenu.currentItem = constrain(settingsMenu.currentItem - 1, -1, settingsMenu.itemsCount - 1);
     if(settingsMenu.currentItem < 12) {
       currentMenuPage = 0;
     }
@@ -961,7 +961,7 @@ void displaySettingsPage(bool forceClear = false) {
     settingsMenu.update = true;
   }
   else if (enc.isRight()) {
-    settingsMenu.currentItem = constrain(settingsMenu.currentItem - 1, -1, settingsMenu.itemsCount - 1);
+    settingsMenu.currentItem = constrain(settingsMenu.currentItem + 1, -1, settingsMenu.itemsCount - 1);
     if(settingsMenu.currentItem < 12) {
       currentMenuPage = 0;
     }
